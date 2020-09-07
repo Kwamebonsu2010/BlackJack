@@ -61,6 +61,7 @@ public class Player {
 					break;
 				}
 			}
+			getSum();
 		}
 		evaluate(sum);
 

@@ -19,7 +19,6 @@ public class Deck {
 	public Deck() throws IllegalArgumentException {
 		myDeck = new Stack<Card>();
 		fillDeck();
-//		Shuffle();
 		cardsRemaining = myDeck.size();
 	}
 
@@ -87,20 +86,6 @@ public class Deck {
 	}
 
 	private void fillDeck() {
-/*		// Ace
-		Card ace = new Card(new Suit("Hearts"), 1);
-		ace.setValue(11);
-		myDeck.push(ace);
-		ace = new Card(new Suit("Diamonds"), 1);
-		ace.setValue(11);
-		myDeck.push(ace);
-		ace = new Card(new Suit("Clubs"), 1);
-		ace.setValue(11);
-		myDeck.push(ace);
-		ace = new Card(new Suit("Spades"), 1);
-		ace.setValue(11);
-		myDeck.push(ace);
-	*/	
 		// Fill the deck
 		for (int i = 1; i < 14; i++) {
 			// Create 1 of each suit

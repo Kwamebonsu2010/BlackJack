@@ -11,9 +11,9 @@ public class Card {
 		if (value < 1 || value > 13) {
 			throw new IllegalArgumentException("Invalid Card Value");
 		}
+		// Face cards
 		if (value == 1) {
 			this.name = "Ace";
-// Remove to revert
 			this.value = 11;
 		} else if (value < 11) {
 			this.name = "" + value;

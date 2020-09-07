@@ -37,64 +37,64 @@ public class RunGame {
 		CPU1.getCards(myDeck.giveCard(), myDeck.giveCard());
 		CPU2.getCards(myDeck.giveCard(), myDeck.giveCard());
 		CPU3.getCards(myDeck.giveCard(), myDeck.giveCard());
-
+		// User plays first followed by AI players
 		while (!CPU3.isReady()) {
 			while (!CPU2.isReady()) {
 				while (!CPU1.isReady()) {
 					while (!user.isReady()) {
 						System.out.print(userName + ", would you like to hit or submit?");
 						System.out.println("  (enter 'hit' to hit and anything else to submit)");
-//						Thread.sleep(1000);
+						Thread.sleep(1000);
 						if (input.next().equalsIgnoreCase("hit")) {
 							user.Hit(myDeck.giveCard());
-//							Thread.sleep(1000);
+							Thread.sleep(1000);
 						} else {
 							user.setReady();
-//							Thread.sleep(1000);
+							Thread.sleep(1000);
 						}
 						System.out.println("\n");
 					}
 					System.out.println("Mike" + ", would you like to hit or submit?");
-//					Thread.sleep(1000);
+					Thread.sleep(1000);
 					if (!CPU1.play()) {
 						CPU1.Hit(myDeck.giveCard());
-//						Thread.sleep(1000);
+						Thread.sleep(1000);
 					} else {
 						System.out.println("I'm good");
 						CPU1.setReady();
-//						Thread.sleep(1000);
+						Thread.sleep(1000);
 					}
 
 					System.out.println("\n");
 
 				}
 				System.out.println("Sarah" + ", would you like to hit or submit?");
-//				Thread.sleep(1000);
+				Thread.sleep(1000);
 				if (!CPU2.play()) {
 					CPU2.Hit(myDeck.giveCard());
-//					Thread.sleep(1000);
+					Thread.sleep(1000);
 				} else {
 					System.out.println("I'm good");
 					CPU2.setReady();
-//					Thread.sleep(1000);
+					Thread.sleep(1000);
 				}
 
 				System.out.println("\n");
 			}
 			System.out.println("Tyrone" + ", would you like to hit or submit?");
-//			Thread.sleep(1000);
+			Thread.sleep(1000);
 			if (!CPU3.play()) {
 				CPU3.Hit(myDeck.giveCard());
-//				Thread.sleep(1000);
+				Thread.sleep(1000);
 			} else {
 				System.out.println("I'm good");
 				CPU3.setReady();
-//				Thread.sleep(1000);
+				Thread.sleep(1000);
 			}
 
 			System.out.println("\n");
 		}
-
+		// Output the cards of the players
 		System.out.println("\n\n");
 		user.seeCards();
 		System.out.println(userName + " has a score of " + user.calculateSum());
@@ -103,45 +103,60 @@ public class RunGame {
 		CPU2.seeCards();
 		System.out.println("Sarah has a score of " + CPU2.getSum());
 		CPU3.seeCards();
-		System.out.println("Tyrone has a score of " + CPU3.getSum());
-
+		System.out.println("Tyrone has a score of " + CPU3.getSum() + "\n");
+		// Declare the winner
 		declareWinner(user, CPU1, CPU2, CPU3);
 	}
 
 	// Who is the closest to 21 without going over?
 	// In case of a tie, the player with the fewest cards wins
 	public static void declareWinner(Player p1, Player p2, Player p3, Player p4) {
-		//
-		//
-		// FIX THIS WHOLE METHOD
-		//
-		//
-		//
-		Player highest = p1;
-		Player second = p1;
-		Player[] players = new Player[4];
-		players[0] = p1;
-		players[1] = p2;
-		players[2] = p3;
-		players[3] = p4;
+		// Used to determine the tense of the word 'win'
+		boolean tie = false;
+		Player[] players = { p1, p2, p3, p4 };
+		players = sort(players);
+		// Everyone folds
+		if (players[0].calculateSum() > 21) {
+			System.out.println("Everybody folded! There is no winner!");
+		} else {
+			int temp = 0;
+			if (players[players.length - 1].calculateSum() <= 21) {
+				temp = players.length - 1;
+			} else {
+				while (players[temp + 1].calculateSum() <= 21 && temp < players.length - 2) {
+					temp++;
 
-		for (int i = 1; i < players.length; i++) {
-			if (players[i].calculateSum() > highest.calculateSum() && players[i].calculateSum() <= 21) {
-				highest = players[i];
-			} else if (players[i].calculateSum() == highest.calculateSum()) {
-				second = players[i];
+				}
+			}
+			// Check for tie
+			for (int i = 0; i < players.length; i++) {
+				if (i != temp) {
+					if (players[i].calculateSum() == players[temp].calculateSum()) {
+							System.out.print(players[i].getName() + " and ");
+							tie = true;
+					}
+				}
+			}
+			if (tie == false) {
+				System.out.println(players[temp].getName() + " wins!");
+			} else {
+				System.out.println(players[temp].getName() + " win!");
 			}
 		}
-		if (highest.calculateSum() != second.calculateSum()) {
-			System.out.println(highest.getName() + " wins with a score of " + highest.calculateSum());
-		} else if (highest.countCards() == second.countCards() && highest.calculateSum() == second.calculateSum()) {
-			System.out.println(
-					highest.getName() + " and " + second.getName() + " tie with a score of: " + highest.calculateSum());
-		} else if (highest.countCards() < second.countCards() && highest.calculateSum() == second.calculateSum()) {
-			System.out.println(highest.getName() + " wins with a score of " + highest.calculateSum());
-		} else {
-			System.out.println(second.getName() + " wins with a score of " + second.calculateSum());
-		}
 
+	}
+
+	// Bubble Sort Players by their sum attribute
+	private static Player[] sort(Player[] players) {
+		for (int i = 0; i < players.length; i++) {
+			for (int j = 0; j < players.length; j++) {
+				if (players[i].calculateSum() < players[j].calculateSum()) {
+					Player temp = players[i];
+					players[i] = players[j];
+					players[j] = temp;
+				}
+			}
+		}
+		return players;
 	}
 }

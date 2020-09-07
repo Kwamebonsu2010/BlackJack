@@ -103,4 +103,12 @@ public class AIPlayer extends Player {
 		return ready;
 	}
 
+	public int calculateSum() {
+		int sum = 0;
+		for (int i = 0; i < cards.size(); i++) {
+			sum += cards.get(i).getValue();
+		}
+		return sum;
+	}
+
 }
